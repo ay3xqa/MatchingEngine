@@ -27,16 +27,12 @@ class Engine():
                 quantity = 0
         if quantity:
             heapq.heappush(leftoverHeap, Order(orderType, price, quantity))
-        # print("buys", self.buyOrders)
-        # print("sells", self.sellOrders)
-        # print("transactions----------------")
-        # for q in res:
-        #     print(q)
         return res
     
     #assume is valid to delete
     #delete a sell/buy order at that price given quantity
     def deleteOrder(self, orderType, price, quantity):
+        
         return 
     
     #get total volume at a specified price and ordertype
@@ -47,6 +43,19 @@ class Engine():
     def getRange(self, orderType):
         return
     
+    def printTradebook(self):
+        print("---BUYS AVAILABLE---")
+        for buy in self.buyOrders:
+            print(buy)
+        print("---SELLS AVAILABLE---")
+        for sell in self.sellOrders:
+            print(sell)
+        print("------------------------------------------")
+    
+    def printTransactions(self, transactions):
+        print("---Transactions---")
+        for buy in transactions:
+            print(buy)
 
 # t = []
 # x = Order("BUY", 5, 100)
@@ -59,7 +68,10 @@ class Engine():
 
 e = Engine()
 
-e.submitOrder("BUY", 5, 150)
-e.submitOrder("SELL", 4, 200)
-e.submitOrder("BUY", 8, 50)
+e.printTransactions(e.submitOrder("BUY", 3, 150))
+e.printTradebook()
+e.printTransactions(e.submitOrder("BUY", 6, 200))
+e.printTradebook()
+e.printTransactions(e.submitOrder("SELL", 4, 50))
+e.printTradebook()
 # e.submitOrder("SELL", 3, 100)
