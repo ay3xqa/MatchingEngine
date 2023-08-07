@@ -15,18 +15,30 @@ class Engine():
         leftoverHeap = leftover[orderType]
         heap = mapping[orderType]
         res = []
-        while quantity and heap and operations[orderType](heap[0].price,price):
+        while quantity and heap and operations[orderType](abs(heap[0].price),price):
             currentOrder = heap[0]
             if currentOrder.quantity <= quantity:
-                res.append(Order(currentOrder.orderType, min(currentOrder.price, price), currentOrder.quantity))
+                if orderType == "BUY":
+                    transaction = Order(currentOrder.orderType, min(currentOrder.price, price), currentOrder.quantity)
+                else:
+                    transaction = Order(currentOrder.orderType, min(-currentOrder.price, price), currentOrder.quantity)
+                res.append(transaction)
                 quantity-=currentOrder.quantity
                 heapq.heappop(heap)
             else:
-                res.append(Order(currentOrder.orderType, min(currentOrder.price, price), quantity))
+                if orderType == "BUY":
+                    transaction = Order(currentOrder.orderType, min(currentOrder.price, price), quantity)
+                else:
+                    transaction = Order(currentOrder.orderType, min(-currentOrder.price, price), quantity)
+                res.append(transaction)
                 currentOrder.quantity-=quantity
                 quantity = 0
         if quantity:
-            heapq.heappush(leftoverHeap, Order(orderType, price, quantity))
+            if orderType == "SELL":
+                leftoverOrder = Order(orderType, price, quantity)
+            else:
+                leftoverOrder = Order(orderType, -price, quantity)
+            heapq.heappush(leftoverHeap, leftoverOrder)
         return res
     
     #assume is valid to delete
